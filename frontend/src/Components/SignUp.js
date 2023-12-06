@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  let navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -62,7 +64,12 @@ const SignUp = () => {
       });
 
       if (response.ok) {
-        console.log("Data uploaded sucessfully!");
+        const data = await response.json();
+        if (data.redirectTo) {
+          navigate(data.redirectTo);
+        } else {
+          navigate(data.redirectTo);
+        }
       } else {
         console.log("Failed to sign up the user");
       }
