@@ -39,6 +39,7 @@ const Login = () => {
       if (response.ok) {
         const responseData = await response.json();
         alert(responseData.message);
+        localStorage.setItem("token", responseData.token);
         navigate("/get-all-posts");
       } else {
         const errorMessage = await response.json();
