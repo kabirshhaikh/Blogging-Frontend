@@ -40,7 +40,7 @@ const Login = () => {
         const responseData = await response.json();
         alert(responseData.message);
         localStorage.setItem("token", responseData.token);
-        navigate("/get-all-posts");
+        navigate("/home-page");
       } else {
         const errorMessage = await response.json();
         alert(errorMessage.message);

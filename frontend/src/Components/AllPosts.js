@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Comments from "../Components/Comments";
 
 const AllPosts = () => {
   const [data, setData] = useState([]);
@@ -20,35 +21,60 @@ const AllPosts = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await helperFunctionToFetch(
-          "http://localhost:4040/get-all-posts",
-          {
-            method: "GET",
-            headers: {},
-          }
-        );
-        if (response.ok) {
-          const responseData = await response.json();
-          setData(responseData.allPosts);
-        } else {
-          const error = await response.json();
-          console.log(error.message);
+  const fetchData = async () => {
+    try {
+      const response = await helperFunctionToFetch(
+        "http://localhost:4040/get-all-posts",
+        {
+          method: "GET",
+          headers: {},
         }
-      } catch (err) {
-        console.log(err);
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        setData(responseData.allPosts);
+      } else {
+        const error = await response.json();
+        console.log(error.message);
       }
-    };
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
   return (
     <div className="all-posts-container">
       {console.log(data)}
-      <div>All posts </div>
-      <h1>Title: {data.title}</h1>
+      {data ? (
+        data.map((item) => (
+          <div key={item._id}>
+            <div className="card">
+              <img
+                className="card-img-top"
+                src={item.postPicture}
+                alt="Card image cap"
+              />
+              <div className="card-body">
+                <h5 className="card-title">{item.title}</h5>
+                <p className="card-text">{item.content}</p>
+              </div>
+            </div>
+            <div className="post-comments-container">
+              <div className="card">
+                <div className="card-body">
+                  <Comments postId={item._id} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <h1>No post's to show</h1>
+      )}
     </div>
   );
 };
