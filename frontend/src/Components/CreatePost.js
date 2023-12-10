@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './CreatePost.css';
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -61,7 +62,7 @@ const CreatePost = () => {
   return (
     <div className="create-post-container">
       <form onSubmit={handleForm}>
-        <div className="form-group">
+        <div style={{marginBottom:"10px"}} className="form-group">
           <input
             type="text"
             className="form-control"
@@ -70,7 +71,7 @@ const CreatePost = () => {
             onChange={handleTitle}
           />
         </div>
-        <div className="form-group">
+        <div style={{marginBottom:"10px"}} className="form-group">
           <input
             type="text"
             className="form-control"
@@ -80,7 +81,7 @@ const CreatePost = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="profile-picture">Picture For Post</label>
+          <label style={{marginBottom:"10px"}} htmlFor="profile-picture">Choose a picture for the post:</label>
           <br />
           <input
             type="file"
@@ -89,7 +90,7 @@ const CreatePost = () => {
             onChange={handlePicture}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button style={{marginTop:"10px"}} type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>

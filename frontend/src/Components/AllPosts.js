@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Comments from "../Components/Comments";
+import "./AllPost.css";
 
 const AllPosts = () => {
   const [data, setData] = useState([]);
@@ -51,7 +52,7 @@ const AllPosts = () => {
       {console.log(data)}
       {data ? (
         data.map((item) => (
-          <div key={item._id}>
+          <div key={item._id} className="allposts">
             <div className="card">
               <img
                 className="card-img-top"
@@ -63,7 +64,7 @@ const AllPosts = () => {
                 <p className="card-text">{item.content}</p>
               </div>
             </div>
-            <div className="post-comments-container">
+            <div style={{marginBottom:"30px"}} className="post-comments-container">
               <div className="card">
                 <div className="card-body">
                   <Comments postId={item._id} />
