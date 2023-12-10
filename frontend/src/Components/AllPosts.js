@@ -64,10 +64,13 @@ const AllPosts = () => {
                 <p className="card-text">{item.content}</p>
               </div>
             </div>
-            <div style={{marginBottom:"30px"}} className="post-comments-container">
+            <div
+              style={{ marginBottom: "30px" }}
+              className="post-comments-container"
+            >
               <div className="card">
                 <div className="card-body">
-                  <Comments postId={item._id} />
+                  <Comments postId={item._id} userId={item.user} />
                 </div>
               </div>
             </div>
