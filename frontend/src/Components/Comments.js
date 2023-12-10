@@ -36,7 +36,7 @@ const Comments = ({ postId }) => {
     <div>
       {console.log("Comment data" + commentData)}
       {commentData.length === 0 ? (
-        <h1>No Comments to show</h1>
+        <h1>No Comments to has been posted as of yet!</h1>
       ) : (
         <div>
           {commentData.map((item) => (
