@@ -1,8 +1,43 @@
 import React, { useEffect, useState } from "react";
+import "./Comments.css";
 
 const Comments = ({ postId, userId }) => {
   const [commentData, setCommentData] = useState("");
   const [addedComment, setAddedComment] = useState("");
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+
+  const toggleDropDown = () => {
+    setDropDownOpen(!dropDownOpen);
+  };
+
+  const handleEditCommment = () => {
+    console.log("Edit comment");
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:4040/delete-comment/${postId}/${commentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        alert("Comment deleted sucessfully!");
+        window.location.reload();
+      } else {
+        alert("Unable to delete the comment!");
+        return;
+      }
+    } catch (err) {
+      console.log(err + "delete comment error");
+    }
+  };
 
   const handleAddedComment = (event) => {
     setAddedComment(event.target.value);
@@ -101,8 +136,35 @@ const Comments = ({ postId, userId }) => {
             </div>
           </div>
           {commentData.map((item) => (
-            <div key={item._id}>
-              <p>{item.comment}</p>
+            <div key={item._id} className="existing-comment-container">
+              <div className="comment">
+                <p>{item.comment}</p>
+              </div>
+              <div className="edit-dropdown-container">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={toggleDropDown}
+                >
+                  ...
+                </button>
+                {dropDownOpen && (
+                  <>
+                    <a
+                      className="edit-button"
+                      onClick={() => handleEditCommment(item._id)}
+                    >
+                      Edit
+                    </a>
+                    <a
+                      className="delete-button"
+                      onClick={() => handleDeleteComment(item._id)}
+                    >
+                      Delete
+                    </a>
+                  </>
+                )}
+              </div>
             </div>
           ))}
         </div>
