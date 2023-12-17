@@ -5,6 +5,7 @@ const Comments = ({ postId, userId }) => {
   const [commentData, setCommentData] = useState("");
   const [addedComment, setAddedComment] = useState("");
   const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
 
   const toggleDropDown = () => {
     setDropDownOpen(!dropDownOpen);
@@ -12,6 +13,7 @@ const Comments = ({ postId, userId }) => {
 
   const handleEditCommment = () => {
     console.log("Edit comment");
+    setShowEditButton(true);
   };
 
   const handleDeleteComment = async (commentId) => {
@@ -31,7 +33,7 @@ const Comments = ({ postId, userId }) => {
         alert("Comment deleted sucessfully!");
         window.location.reload();
       } else {
-        alert("Unable to delete the comment!");
+        alert(`User not authorised to delete the comment`);
         return;
       }
     } catch (err) {
@@ -125,6 +127,11 @@ const Comments = ({ postId, userId }) => {
                 >
                   Add Comment
                 </button>
+                {showEditButton && (
+                  <button type="button" className="btn btn-outline-primary">
+                    Edit Comment
+                  </button>
+                )}
               </div>
               <input
                 type="text"
