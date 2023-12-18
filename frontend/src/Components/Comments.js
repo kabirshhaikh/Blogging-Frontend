@@ -6,13 +6,18 @@ const Comments = ({ postId, userId }) => {
   const [addedComment, setAddedComment] = useState("");
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
+  const [editComment, setEditComment] = useState("");
+  const [idOfCommentTobeEdited, setIdOfCommentToBeEdited] = useState("");
 
   const toggleDropDown = () => {
     setDropDownOpen(!dropDownOpen);
   };
 
-  const handleEditCommment = () => {
-    console.log("Edit comment");
+  const handleEditCommment = (item) => {
+    setEditComment(item.comment);
+    setAddedComment(editComment);
+    setIdOfCommentToBeEdited(item._id);
+    console.log("Set added comment:" + addedComment);
     setShowEditButton(true);
   };
 
@@ -43,6 +48,7 @@ const Comments = ({ postId, userId }) => {
 
   const handleAddedComment = (event) => {
     setAddedComment(event.target.value);
+    setEditComment(event.target.value);
   };
 
   const fetchComments = async () => {
@@ -106,6 +112,35 @@ const Comments = ({ postId, userId }) => {
     }
   };
 
+  const handleEditedComment = async (event) => {
+    event.preventDefault();
+
+    try {
+      const token = localStorage.getItem("token");
+      console.log("Id of comment to be edited:" + idOfCommentTobeEdited);
+      const response = await fetch(
+        `http://localhost:4040/edit-comment/${postId}/${idOfCommentTobeEdited}`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ comment: editComment }),
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        alert("Comment edited sucessfully!");
+        window.location.reload();
+      } else {
+        alert("Unable to edit the comment!");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchComments();
   }, [postId]);
@@ -128,7 +163,11 @@ const Comments = ({ postId, userId }) => {
                   Add Comment
                 </button>
                 {showEditButton && (
-                  <button type="button" className="btn btn-outline-primary">
+                  <button
+                    onClick={handleEditedComment}
+                    type="button"
+                    className="btn btn-outline-primary"
+                  >
                     Edit Comment
                   </button>
                 )}
@@ -139,6 +178,7 @@ const Comments = ({ postId, userId }) => {
                 aria-label="Default"
                 aria-describedby="inputGroup-sizing-default"
                 onChange={handleAddedComment}
+                value={editComment}
               />
             </div>
           </div>
@@ -159,7 +199,7 @@ const Comments = ({ postId, userId }) => {
                   <>
                     <a
                       className="edit-button"
-                      onClick={() => handleEditCommment(item._id)}
+                      onClick={() => handleEditCommment(item)}
                     >
                       Edit
                     </a>
