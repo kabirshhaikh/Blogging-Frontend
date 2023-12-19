@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Comments.css";
+import Likes from "./Likes";
 
 const Comments = ({ postId, userId }) => {
   const [commentData, setCommentData] = useState("");
@@ -154,6 +155,9 @@ const Comments = ({ postId, userId }) => {
         <div>
           <div className="add-comment-container">
             <div className="input-group mb-3">
+              <div className="like-component-container">
+                <Likes postId={postId} userId={userId} />
+              </div>
               <div className="input-group-prepend">
                 <button
                   onClick={addComment}
